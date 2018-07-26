@@ -1,0 +1,31 @@
+name: Sentry
+version: 0.1.0
+description: Integrates Sentry Bugtracker for Grav
+icon: plug
+author:
+  name: phY
+  email: phy@pwnyprod.de
+homepage: https://github.com/pwnyprod/grav-plugin-sentry
+demo: http://demo.yoursite.com
+keywords: grav, plugin, etc
+bugs: https://github.com/pwnyprod/grav-plugin-sentry/issues
+docs: https://github.com/pwnyprod/grav-plugin-sentry/blob/develop/README.md
+license: MIT
+
+form:
+  validation: strict
+  fields:
+    enabled:
+      type: toggle
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+    dns_link:
+      type: text
+      label: PLUGIN_SENTRY.DNS_LINK
+      help: PLUGIN_SENTRY.TEXT_DNS_LINK

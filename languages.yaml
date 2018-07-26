@@ -1,0 +1,8 @@
+en:
+  PLUGIN_SENTRY:
+    DNS_LINK: DNS Link
+    TEXT_DNS_LINK: DNS Link from your Sentry Project
+de:
+  PLUGIN_SENTRY:
+    DNS_LINK: DNS Link
+    TEXT_DNS_LINK: DNS Link aus dem Sentry Projekt
