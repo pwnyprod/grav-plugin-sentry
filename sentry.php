@@ -43,6 +43,8 @@ class SentryPlugin extends Plugin
      */
     public function onPluginsInitialized()
     {
+        $config = $this->grav['config'];
+
         // Don't proceed if we are in the admin plugin
         if ($this->isAdmin()) {
             return;
@@ -56,6 +58,34 @@ class SentryPlugin extends Plugin
         }
 
         $this->registerErrorHandler();
+
+        if ($config->get('plugins.sentry.log_not_found', false)) {
+            $this->enable([
+                'onPageNotFound' => ['onPageNotFound', 1],
+            ]);
+        }
+    }
+
+    /**
+     *  if page not found found saves data
+     *
+     */
+    public function onPageNotFound()
+    {
+        $time         = date("Y-m-d h:i:sa");
+        $uri          = $this->grav['uri'];
+        $url          = $uri->url;
+
+        $vars         = array(
+            'url'     => $url,
+            'time'    => $time,
+            'referer' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
+        );
+
+        $this->client->captureMessage('Page not found: %s', array($url), array(
+            'extra' => $vars,
+            'fingerprint' => ['{{ default }}', $url]
+        ));
     }
 
     /**
@@ -87,8 +117,7 @@ class SentryPlugin extends Plugin
     {
         try {
             return $this->grav['config']->get('plugins.sentry.dns_link');
-        } catch (Exception $exception)
-        {
+        } catch (Exception $exception) {
             return false;
         }
     }

@@ -2,6 +2,7 @@ en:
   PLUGIN_SENTRY:
     DNS_LINK: DNS Link
     TEXT_DNS_LINK: DNS Link from your Sentry Project
+    LOG_NOT_FOUND: Log 404 Not Found Errors
 de:
   PLUGIN_SENTRY:
     DNS_LINK: DNS Link
