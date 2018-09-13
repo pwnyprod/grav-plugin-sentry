@@ -25,6 +25,16 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
+    log_not_found:
+      type: toggle
+      label: PLUGIN_SENTRY.LOG_NOT_FOUND
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
     dns_link:
       type: text
       label: PLUGIN_SENTRY.DNS_LINK

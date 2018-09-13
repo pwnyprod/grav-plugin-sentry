@@ -1,2 +1,3 @@
 enabled: false
 dns_link:
+log_not_found: true

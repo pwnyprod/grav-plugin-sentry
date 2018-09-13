@@ -1,6 +1,6 @@
 # sentry Plugin
 
-The **sentry** Plugin is for [Grav CMS](http://github.com/getgrav/grav).
+The **sentry** Plugin is for [Grav CMS](http://github.com/getgrav/grav) with an option to log 404 Not Found events.
 
 ## Installation
 
@@ -37,6 +37,7 @@ Here is the default configuration and an explanation of available options:
 ```yaml
     enabled: false
     dns_link: 
+    log_not_found: true
 ```
 * `dns_link` **(required)**: Your Sentry DNS Link to the Project.
 
