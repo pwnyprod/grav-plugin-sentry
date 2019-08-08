@@ -38,8 +38,17 @@ Here is the default configuration and an explanation of available options:
     enabled: false
     dns_link: 
     log_not_found: true
+    error_types: 6143
+    excluded_exceptions: ''
 ```
-* `dns_link` **(required)**: Your Sentry DNS Link to the Project.
+* `dns_link` **(required)**: Your Sentry DSN Link to the Project.
+* `log_not_found` **(required)**: Set to true if you wish sentry to log invalid url access.
+* `error_types` **(optional)**: The integer value of the php error reporting level that sentry will use to log errors. 
+    Default value is 6143(`E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_USER_DEPRECATED`)
+    If this value is not set the SDK will fallback to 32767(`E_ALL`)
+* `excluded_exceptions` **(optional)**: Comma-separated exception class names that sentry will ignore(whitelist). All exceptions are logged by default.
+    Sample value: `'Grav\Common\Data\ValidationException,Grav\Framework\RequestHandler\Exception\NotFoundException'`    
+
 
 Note that if you use the admin plugin, a file with your configuration, and named sentry.yaml will be saved in the `user/config/plugins/` folder once the configuration is saved in the admin.
 
