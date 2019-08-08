@@ -1,9 +1,13 @@
 en:
   PLUGIN_SENTRY:
-    DNS_LINK: DNS Link
-    TEXT_DNS_LINK: DNS Link from your Sentry Project
+    DNS_LINK: DSN Link
+    TEXT_DNS_LINK: DSN Link from your Sentry Project
     LOG_NOT_FOUND: Log 404 Not Found Errors
+    ERROR_TYPES: Error reporting level(php error reporting value)
+    TEXT_ERROR_TYPES: Determine errors sentry will receive by inputting php error reporting level
+    EXCLUDED_EXCEPTIONS: Whitelist of exceptions(comma-separate for multiple classes)
+    TEXT_EXCLUDED_EXCEPTIONS: List of exceptions you want sentry to ignore, i.e: "Grav\Common\Data\ValidationException"
 de:
   PLUGIN_SENTRY:
-    DNS_LINK: DNS Link
-    TEXT_DNS_LINK: DNS Link aus dem Sentry Projekt
+    DNS_LINK: DSN Link
+    TEXT_DNS_LINK: DSN Link aus dem Sentry Projekt

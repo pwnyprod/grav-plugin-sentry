@@ -1,3 +1,5 @@
 enabled: false
 dns_link:
 log_not_found: true
+error_types: 6143
+excluded_exceptions:

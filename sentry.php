@@ -5,21 +5,24 @@ namespace Grav\Plugin;
 
 use Exception;
 use Grav\Common\Plugin;
-use Raven_Autoloader;
-use Raven_Client;
-use Raven_ErrorHandler;
-
+use Sentry;
 /**
  * Class SentryPlugin
  * @package Grav\Plugin
  */
-class SentryPlugin extends Plugin
+class GravSentryPlugin extends Plugin
 {
 
     /**
      * @var Raven_Client
      */
     private $client = null;
+
+    /**
+     * The set of php sdk options that this plugin allows to customize. See Sentry PHP sdk documentation for details.
+     */
+    const OPTION_ERROR_TYPES = 'error_types';
+    const OPTION_EXCLUDED_EXCEPTIONS = 'excluded_exceptions';
 
     /**
      * @return array
@@ -51,15 +54,14 @@ class SentryPlugin extends Plugin
         }
 
         $this->initLoader();
-        $this->initClient();
 
-        if (null === $this->client){
+        if (!$this->initClient()) {
             return;
         }
 
-        $this->registerErrorHandler();
+        $this->registerErrorHandlers();
 
-        if ($config->get('plugins.sentry.log_not_found', false)) {
+        if ($config->get('plugins.grav-sentry.log_not_found', false)) {
             $this->enable([
                 'onPageNotFound' => ['onPageNotFound', 1],
             ]);
@@ -76,16 +78,16 @@ class SentryPlugin extends Plugin
         $uri          = $this->grav['uri'];
         $url          = $uri->url;
 
-        $vars         = array(
-            'url'     => $url,
-            'time'    => $time,
-            'referer' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
-        );
+        // Just add context data and unique per url fingerprint before throwing Exception
+        Sentry\configureScope(function (Sentry\State\Scope $scope) use($url, $time) {
+            $scope->setExtra('url', $url);
+            $scope->setExtra('time', $time);
+            $scope->setExtra('referer', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 
-        $this->client->captureMessage('Page not found: %s', array($url), array(
-            'extra' => $vars,
-            'fingerprint' => ['{{ default }}', $url]
-        ));
+            $scope->setFingerprint(['{{ default }}', $url]);
+        });
+
+        throw new \RuntimeException('Page not found: '. $url, 404);
     }
 
     /**
@@ -94,7 +96,6 @@ class SentryPlugin extends Plugin
     private function initLoader()
     {
         require_once __DIR__ . '/vendor/autoload.php';
-        Raven_Autoloader::register();
     }
 
     /**
@@ -102,11 +103,22 @@ class SentryPlugin extends Plugin
      */
     private function initClient()
     {
-        $dns = $this->getConfig();
-        if (false !== $dns)
-        {
-            $this->client = new Raven_Client($dns);
+        $dsn = $this->getConfig();
+        $optionals = $this->getOptionalConfigs();
+
+        // Don't initialize if mandatory dsn config not set
+        if (false !== $dsn) {
+            $opts = array_merge(
+                ['dsn' => $dsn],
+                $optionals
+            );
+
+            Sentry\init($opts);
+
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -115,21 +127,48 @@ class SentryPlugin extends Plugin
      */
     private function getConfig()
     {
+
         try {
-            return $this->grav['config']->get('plugins.sentry.dns_link');
+            return $this->grav['config']->get('plugins.grav-sentry.dns_link');
         } catch (Exception $exception) {
             return false;
         }
     }
 
     /**
+     * Get optional configs if they can be found.
+     * @return array
+     */
+    private function getOptionalConfigs()
+    {
+        $configs = [];
+        try {
+
+            $configs[self::OPTION_ERROR_TYPES] = $this->grav['config']->get('plugins.grav-sentry.' . self::OPTION_ERROR_TYPES);
+            $excludedExceptions = $this->grav['config']->get('plugins.grav-sentry.' . self::OPTION_EXCLUDED_EXCEPTIONS);
+            if ($excludedExceptions) {
+                $configs[self::OPTION_EXCLUDED_EXCEPTIONS] = explode(',', $excludedExceptions);
+            }
+
+            $this->grav['log']->info('error types: '. $configs[self::OPTION_ERROR_TYPES]);
+            $this->grav['log']->info('excluded exceptions: '. $excludedExceptions);
+
+        } catch (Exception $exception) {
+            // do nothing if optional config not found continue returning $configs[] array
+        }
+
+        return $configs;
+    }
+
+    /**
      * Register the ErrorHandler in the System
      */
-    private function registerErrorHandler()
+    private function registerErrorHandlers()
     {
-        $error_handler = new Raven_ErrorHandler($this->client);
-        $error_handler->registerExceptionHandler();
-        $error_handler->registerErrorHandler();
-        $error_handler->registerShutdownFunction();
+        set_exception_handler([$this, 'handleException']);
+    }
+
+    public function handleException($exception) {
+        Sentry\captureException($exception);
     }
 }

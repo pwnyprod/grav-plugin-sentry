@@ -39,3 +39,17 @@ form:
       type: text
       label: PLUGIN_SENTRY.DNS_LINK
       help: PLUGIN_SENTRY.TEXT_DNS_LINK
+    error_types:
+      type: text
+      size: medium
+      default: 6143
+      label: PLUGIN_SENTRY.ERROR_TYPES
+      help: PLUGIN_SENTRY.TEXT_ERROR_TYPES
+      validate:
+        type: number
+    excluded_exceptions:
+      type: text
+      size: medium
+      default: ''
+      label: PLUGIN_SENTRY.EXCLUDED_EXCEPTIONS
+      help: PLUGIN_SENTRY.TEXT_EXCLUDED_EXCEPTIONS
