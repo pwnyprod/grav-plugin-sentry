@@ -44,7 +44,7 @@ final class Versions
   'symfony/options-resolver' => 'v4.3.3@40762ead607c8f792ee4516881369ffa553fee6f',
   'symfony/polyfill-ctype' => 'v1.12.0@550ebaac289296ce228a706d0867afc34687e3f4',
   'zendframework/zend-diactoros' => '2.1.3@279723778c40164bcf984a2df12ff2c6ec5e61c1',
-  '__root__' => 'dev-master@59967b9536f02571bf76d0d96535c6c7ada936f4',
+  '__root__' => 'dev-master@1650dea5ee7b2c5f9efeaea48a3ca451cddc1361',
 );
 
     private function __construct()
