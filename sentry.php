@@ -10,7 +10,7 @@ use Sentry;
  * Class SentryPlugin
  * @package Grav\Plugin
  */
-class GravSentryPlugin extends Plugin
+class SentryPlugin extends Plugin
 {
 
     /**
@@ -61,7 +61,7 @@ class GravSentryPlugin extends Plugin
 
         $this->registerErrorHandlers();
 
-        if ($config->get('plugins.grav-sentry.log_not_found', false)) {
+        if ($config->get('plugins.sentry.log_not_found', false)) {
             $this->enable([
                 'onPageNotFound' => ['onPageNotFound', 1],
             ]);
@@ -129,7 +129,7 @@ class GravSentryPlugin extends Plugin
     {
 
         try {
-            return $this->grav['config']->get('plugins.grav-sentry.dns_link');
+            return $this->grav['config']->get('plugins.sentry.dns_link');
         } catch (Exception $exception) {
             return false;
         }
@@ -144,14 +144,11 @@ class GravSentryPlugin extends Plugin
         $configs = [];
         try {
 
-            $configs[self::OPTION_ERROR_TYPES] = $this->grav['config']->get('plugins.grav-sentry.' . self::OPTION_ERROR_TYPES);
-            $excludedExceptions = $this->grav['config']->get('plugins.grav-sentry.' . self::OPTION_EXCLUDED_EXCEPTIONS);
+            $configs[self::OPTION_ERROR_TYPES] = $this->grav['config']->get('plugins.sentry.' . self::OPTION_ERROR_TYPES);
+            $excludedExceptions = $this->grav['config']->get('plugins.sentry.' . self::OPTION_EXCLUDED_EXCEPTIONS);
             if ($excludedExceptions) {
                 $configs[self::OPTION_EXCLUDED_EXCEPTIONS] = explode(',', $excludedExceptions);
             }
-
-            $this->grav['log']->info('error types: '. $configs[self::OPTION_ERROR_TYPES]);
-            $this->grav['log']->info('excluded exceptions: '. $excludedExceptions);
 
         } catch (Exception $exception) {
             // do nothing if optional config not found continue returning $configs[] array
