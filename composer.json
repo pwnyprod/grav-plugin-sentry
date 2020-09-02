@@ -2,4 +2,9 @@
     "require": {
         "sentry/sdk": "2.0.*"
     }
+    ,
+    "require-dev": {
+        "codeception/codeception": "^2.4",
+        "getgrav/grav": "^1.6"
+    }
 }
