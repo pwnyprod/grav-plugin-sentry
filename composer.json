@@ -6,5 +6,13 @@
     "require-dev": {
         "codeception/codeception": "^2.4",
         "getgrav/grav": "^1.6"
+    },
+    "scripts": {
+        "test": "vendor/bin/codecept run"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "sentry.php"
+        ]
     }
 }

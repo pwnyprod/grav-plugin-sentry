@@ -1,28 +1,25 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Grav\Plugin;
 
-
-use Exception;
 use Grav\Common\Plugin;
-use Sentry;
+use Sentry as SentrySdk;
+
 /**
  * Class SentryPlugin
+ *
  * @package Grav\Plugin
  */
-class SentryPlugin extends Plugin
+class sentry extends Plugin
 {
-
-    /**
-     * @var Raven_Client
-     */
-    private $client = null;
-
     /**
      * The set of php sdk options that this plugin allows to customize. See Sentry PHP sdk documentation for details.
      */
-    const OPTION_ERROR_TYPES = 'error_types';
-    const OPTION_EXCLUDED_EXCEPTIONS = 'excluded_exceptions';
+    public const CONFIG_PREFIX = 'plugins.sentry.';
+    public const OPTION_DNS_LINK = 'dns_link';
+    public const OPTION_LOG_NOT_FOUND = 'log_not_found';
+    public const OPTION_ERROR_TYPES = 'error_types';
+    public const OPTION_EXCLUDED_EXCEPTIONS = 'excluded_exceptions';
 
     /**
      * @return array
@@ -34,34 +31,32 @@ class SentryPlugin extends Plugin
      *     callable (or function) as well as the priority. The
      *     higher the number the higher the priority.
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0]
+            'onPluginsInitialized' => ['onPluginsInitialized', 0],
         ];
     }
 
     /**
      * Initialize the plugin
      */
-    public function onPluginsInitialized()
+    public function onPluginsInitialized(): void
     {
-        $config = $this->grav['config'];
-
         // Don't proceed if we are in the admin plugin
-        if ($this->isAdmin()) {
+        if($this->isAdmin()) {
             return;
         }
 
         $this->initLoader();
 
-        if (!$this->initClient()) {
+        if(!$this->initClient()) {
             return;
         }
 
         $this->registerErrorHandlers();
 
-        if ($config->get('plugins.sentry.log_not_found', false)) {
+        if($this->config->get(static::CONFIG_PREFIX . static::OPTION_LOG_NOT_FOUND, false)) {
             $this->enable([
                 'onPageNotFound' => ['onPageNotFound', 1],
             ]);
@@ -70,88 +65,91 @@ class SentryPlugin extends Plugin
 
     /**
      *  if page not found found saves data
-     *
      */
-    public function onPageNotFound()
+    public function onPageNotFound(): void
     {
-        $time         = date("Y-m-d h:i:sa");
-        $uri          = $this->grav['uri'];
-        $url          = $uri->url;
+        $time = date("Y-m-d h:i:sa");
+        $uri  = $this->grav['uri'];
+        $url  = $uri->url;
 
         // Just add context data and unique per url fingerprint before throwing Exception
-        Sentry\configureScope(function (Sentry\State\Scope $scope) use($url, $time) {
+        SentrySdk\configureScope(function(Sentry\State\Scope $scope) use ($url, $time) {
             $scope->setExtra('url', $url);
             $scope->setExtra('time', $time);
             $scope->setExtra('referer', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 
             $scope->setFingerprint(['{{ default }}', $url]);
         });
-
-        throw new \RuntimeException('Page not found: '. $url, 404);
+//        throw new \RuntimeException('Page not found: '.$url, 404);
     }
 
     /**
      * Initialize the Composer Autoloader
      */
-    private function initLoader()
+    private function initLoader(): void
     {
-        require_once __DIR__ . '/vendor/autoload.php';
+        require_once __DIR__.'/vendor/autoload.php';
     }
 
     /**
      * Initialize the Sentry Client
+     *
+     * @return bool
      */
-    private function initClient()
+    private function initClient(): bool
     {
         $dsn = $this->getConfig();
         $optionals = $this->getOptionalConfigs();
 
         // Don't initialize if mandatory dsn config not set
-        if (false !== $dsn) {
-            $opts = array_merge(
-                ['dsn' => $dsn],
-                $optionals
-            );
-
-            Sentry\init($opts);
-
-            return true;
+        if(empty($dsn)) {
+            return false;
         }
 
-        return false;
+        $opts = array_merge(
+            $dsn,
+            $optionals
+        );
+
+        SentrySdk\init($opts);
+
+        return true;
+
     }
 
     /**
      * Grep Config from sentry.yaml
-     * @return bool|string
+     *
+     * @return array
      */
-    private function getConfig()
+    private function getConfig(): array
     {
-
-        try {
-            return $this->grav['config']->get('plugins.sentry.dns_link');
-        } catch (Exception $exception) {
-            return false;
+        $configs = [];
+        $dnsLink = $this->config->get(static::CONFIG_PREFIX . static::OPTION_DNS_LINK);
+        if(null !== $dnsLink) {
+            $configs['dsn'] = $dnsLink;
         }
+
+        return $configs;
     }
 
     /**
      * Get optional configs if they can be found.
+     *
      * @return array
      */
-    private function getOptionalConfigs()
+    private function getOptionalConfigs(): array
     {
         $configs = [];
-        try {
+        $errorTypes = $this->config->get(static::CONFIG_PREFIX . static::OPTION_ERROR_TYPES);
+        $excludedExceptions = $this->config->get(static::CONFIG_PREFIX . static::OPTION_EXCLUDED_EXCEPTIONS);
 
-            $configs[self::OPTION_ERROR_TYPES] = $this->grav['config']->get('plugins.sentry.' . self::OPTION_ERROR_TYPES);
-            $excludedExceptions = $this->grav['config']->get('plugins.sentry.' . self::OPTION_EXCLUDED_EXCEPTIONS);
-            if ($excludedExceptions) {
-                $configs[self::OPTION_EXCLUDED_EXCEPTIONS] = explode(',', $excludedExceptions);
-            }
+        if(null !== $errorTypes) {
+            $configs[static::OPTION_ERROR_TYPES] = $errorTypes;
+        }
 
-        } catch (Exception $exception) {
-            // do nothing if optional config not found continue returning $configs[] array
+        if(null !== $excludedExceptions) {
+            $configs[static::OPTION_EXCLUDED_EXCEPTIONS] = explode(',', $excludedExceptions);
         }
 
         return $configs;
@@ -160,12 +158,16 @@ class SentryPlugin extends Plugin
     /**
      * Register the ErrorHandler in the System
      */
-    private function registerErrorHandlers()
+    private function registerErrorHandlers(): void
     {
         set_exception_handler([$this, 'handleException']);
     }
 
-    public function handleException($exception) {
-        Sentry\captureException($exception);
+    /**
+     * @param \Exception|\Throwable $exception
+     */
+    public function handleException($exception): void
+    {
+        SentrySdk\captureException($exception);
     }
 }

@@ -1,7 +1,7 @@
 namespace: Grav
 suites:
     unit:
-        path: .
+        path: ./unit
 
 settings:
     shuffle: true
@@ -11,4 +11,3 @@ paths:
     output: tests/_output
     support: tests/_support
     data: tests
-     
