@@ -5,6 +5,7 @@ build:
     project_setup:
         before:
             - "composer install"
+            - "sudo apt-get install -y zip php-zip"
     nodes:
         analysis:
             project_setup:
