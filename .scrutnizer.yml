@@ -1,0 +1,48 @@
+build:
+    environment:
+        php:
+            version: "7.1"
+    project_setup:
+        before:
+            - "composer install"
+    nodes:
+        analysis:
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - php-scrutinizer-run
+                    - command: phpcs-run
+                      use_website_config: true
+filter:
+    excluded_paths:
+        - 'tests/*'
+    dependency_paths:
+        - 'vendor/*'
+checks:
+    php:
+        fix_php_opening_tag: false
+        remove_php_closing_tag: false
+        one_class_per_file: false
+        side_effects_or_types: false
+        no_mixed_inline_html: false
+        require_braces_around_control_structures: false
+        php5_style_constructor: false
+        no_global_keyword: false
+        avoid_usage_of_logical_operators: false
+        psr2_class_declaration: false
+        no_underscore_prefix_in_properties: false
+        no_underscore_prefix_in_methods: false
+        blank_line_after_namespace_declaration: false
+        single_namespace_per_use: false
+        psr2_switch_declaration: false
+        psr2_control_structure_declaration: false
+        avoid_superglobals: false
+        security_vulnerabilities: false
+        no_exit: false
+coding_style:
+    php: {  }
+build_failure_conditions:
+    - 'elements.rating(< A).exists'
+    - 'issues.new.exists'
