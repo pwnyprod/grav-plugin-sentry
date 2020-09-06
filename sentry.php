@@ -4,6 +4,7 @@ namespace Grav\Plugin;
 
 use Grav\Common\Plugin;
 use Sentry as SentrySdk;
+use Sentry\State\Scope;
 
 /**
  * Class SentryPlugin
@@ -73,7 +74,7 @@ class sentry extends Plugin
         $url  = $uri->url;
 
         // Just add context data and unique per url fingerprint before throwing Exception
-        SentrySdk\configureScope(function(Sentry\State\Scope $scope) use ($url, $time) {
+        SentrySdk\configureScope(function(Scope $scope) use ($url, $time) {
             $scope->setExtra('url', $url);
             $scope->setExtra('time', $time);
             $scope->setExtra('referer', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
