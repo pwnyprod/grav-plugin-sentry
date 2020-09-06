@@ -11,6 +11,7 @@
         }
     ],
     "require": {
+        "ext-zip": "*",
         "sentry/sdk": "2.0.*"
     }
     ,
