@@ -20,5 +20,10 @@
     },
     "scripts": {
         "test": "vendor/bin/codecept run"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "sentry.php"
+        ]
     }
 }
