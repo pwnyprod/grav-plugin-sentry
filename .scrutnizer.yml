@@ -5,7 +5,7 @@ build:
     project_setup:
         before:
             - "composer install"
-            - "sudo apt-get install -y zip php-zip"
+            - "sudo apt-get install -y zip php-zip php-gd"
     nodes:
         analysis:
             project_setup:
