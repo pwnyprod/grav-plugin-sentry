@@ -15,6 +15,13 @@ build:
                     - php-scrutinizer-run
                     - command: phpcs-run
                       use_website_config: true
+        coverage:
+            tests:
+                override:
+                    -   command: ./vendor/bin/codecept run --coverage --coverage-xml
+                        coverage:
+                            file: tests/_output/coverage.xml
+                            format: clover
 filter:
     excluded_paths:
         - 'tests/*'
