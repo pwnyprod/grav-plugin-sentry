@@ -1,4 +1,15 @@
 {
+    "name": "pwnyprod/grav-plugin-sentry",
+    "type": "project",
+    "description": "Sentry Bugtracker integration for Grav",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jonas Hoppe",
+            "email": "pwnyprod@gmail.com",
+            "role": "Author"
+        }
+    ],
     "require": {
         "sentry/sdk": "2.0.*"
     }
@@ -9,10 +20,5 @@
     },
     "scripts": {
         "test": "vendor/bin/codecept run"
-    },
-    "autoload-dev": {
-        "classmap": [
-            "sentry.php"
-        ]
     }
 }
