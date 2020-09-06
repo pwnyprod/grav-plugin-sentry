@@ -12,6 +12,7 @@
     ],
     "require": {
         "ext-zip": "*",
+        "ext-gd": "*",
         "sentry/sdk": "2.0.*"
     }
     ,

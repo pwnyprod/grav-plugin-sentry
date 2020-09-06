@@ -2,10 +2,6 @@ build:
     environment:
         php:
             version: "7.4"
-    project_setup:
-        before:
-            - "composer install"
-            - "sudo apt-get install -y zip php-zip php-gd"
     nodes:
         analysis:
             project_setup:
