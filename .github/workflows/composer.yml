@@ -14,11 +14,11 @@ jobs:
     steps:
 
       - name: Validate composer.json and composer.lock
-        uses: nick-zh/composer@php7.4
+        uses: MilesChou/composer-action@master
         with:
-          action: validate
+          args: validate
 
       - name: composer install
-        uses: nick-zh/composer@php7.4
+        uses: MilesChou/composer-action@master
         with:
-          action: install
+          args: install
