@@ -18,4 +18,4 @@ jobs:
       - name: codecept build
         run: vendor/bin/codecept build
       - name: codeception run
-        run: vendor/bin/codecept run
+        run: vendor/bin/codecept run -c ./codeception.yml
