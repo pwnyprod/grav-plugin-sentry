@@ -7,17 +7,22 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  validate:
     runs-on: ubuntu-latest
-
     steps:
-
+      - name: root
+        uses: actions/checkout@v2
+        run: pwd
+      - name: list
+        uses: actions/checkout@v2
+        run: ls -lash
       - name: Validate composer.json and composer.lock
         uses: MilesChou/composer-action/7.4/install@master
         with:
           args: validate
-
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: composer install
         uses: MilesChou/composer-action/7.4/install@master
         with:
