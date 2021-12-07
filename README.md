@@ -1,7 +1,7 @@
 # sentry Plugin
 
 [![PHP Composer](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/composer.yml/badge.svg?branch=master)](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/composer.yml)
-[![Codeception](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/codeception.yml/badge.svg?branch=master)](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/codeception.yml)
+[![Codeception](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/test.yml)
 
 The **sentry** Plugin is for [Grav CMS](http://github.com/getgrav/grav) with an option to log 404 Not Found events.
 
