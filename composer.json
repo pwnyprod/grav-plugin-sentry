@@ -19,7 +19,7 @@
     }
     ,
     "require-dev": {
-        "codeception/codeception": "^2.4",
+        "codeception/codeception": "4.1.22",
         "getgrav/grav": "^1.6"
     },
     "scripts": {
