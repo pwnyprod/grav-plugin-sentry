@@ -65,8 +65,3 @@ Note that if you use the admin plugin, a file with your configuration, and named
 ## Credits
 
 - [Sentry Bugtracking](https://sentry.io)
-
-## To Do
-
-- Testing Plans
-- Bugfixing
