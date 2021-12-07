@@ -18,7 +18,7 @@
     ,
     "require-dev": {
         "codeception/codeception": "^2.4",
-        "getgrav/grav": "^1.6"
+        "getgrav/grav": "1.7.25"
     },
     "scripts": {
         "test": "vendor/bin/codecept run"
