@@ -11,6 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: Validate composer.json and composer.lock
         uses: MilesChou/composer-action/7.4/install@master
         with:
@@ -19,10 +31,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: composer install
         uses: MilesChou/composer-action/7.4/install@master
         with:
           args: install --ignore-platform-reqs --no-progress
+
   composer-unused:
     runs-on: ubuntu-latest
     steps:
@@ -32,10 +57,24 @@ jobs:
           php-version: '7.4'
           tools: composer:v2
           extensions: zip, gd
+
       - uses: actions/checkout@v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: composer install
         uses: MilesChou/composer-action/7.4/install@master
         with:
           args: install --ignore-platform-reqs
+
       - name: composer unused
         run: curl -JOL https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar && php composer-unused.phar --no-cache --no-interaction --no-progress

@@ -16,14 +16,25 @@ jobs:
           php-version: '7.4'
           tools: composer:v2, codeception
           extensions: zip, gd, mbstring
+
       - uses: actions/checkout@v2
-      - name: composer install
-        uses: nick-zh/composer@php7.4
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
         with:
-          action: install  --ignore-platform-reqs --no-progress
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: composer install
+        run: composer install --no-progress
+
       - name: codecept build
         run: vendor/bin/codecept build
-      - name: show testfolder
-        run: ls -lash tests
+
       - name: codeception run unit
         run: php vendor/bin/codecept run unit
