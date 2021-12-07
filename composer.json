@@ -27,5 +27,11 @@
         "classmap": [
             "sentry.php"
         ]
+    },
+    "extra": {
+        "unused": [
+            "ext-zip",
+            "ext-gd"
+        ]
     }
 }
