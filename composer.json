@@ -15,12 +15,12 @@
         "ext-zip": "*",
         "ext-gd": "*",
         "composer-runtime-api": "^2.0",
-        "sentry/sdk": "2.0.*"
+        "sentry/sdk": "2.0.4"
     }
     ,
     "require-dev": {
         "codeception/codeception": "4.1.22",
-        "getgrav/grav": "^1.6"
+        "getgrav/grav": "1.7.25"
     },
     "scripts": {
         "test": "vendor/bin/codecept run"
