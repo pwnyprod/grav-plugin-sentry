@@ -1,11 +1,7 @@
 # sentry Plugin
 
-![PHP Composer](https://github.com/pwnyprod/grav-plugin-sentry/workflows/PHP%20Composer/badge.svg?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pwnyprod/grav-plugin-sentry/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pwnyprod/grav-plugin-sentry/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/pwnyprod/grav-plugin-sentry/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/pwnyprod/grav-plugin-sentry/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/pwnyprod/grav-plugin-sentry/badges/build.png?b=master)](https://scrutinizer-ci.com/g/pwnyprod/grav-plugin-sentry/build-status/master)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/pwnyprod/grav-plugin-sentry/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
-
+[![PHP Composer](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/composer.yml/badge.svg?branch=master)](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/composer.yml)
+[![Codeception](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/codeception.yml/badge.svg?branch=master)](https://github.com/pwnyprod/grav-plugin-sentry/actions/workflows/codeception.yml)
 
 The **sentry** Plugin is for [Grav CMS](http://github.com/getgrav/grav) with an option to log 404 Not Found events.
 

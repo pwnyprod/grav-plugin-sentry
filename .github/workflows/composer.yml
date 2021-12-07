@@ -14,11 +14,11 @@ jobs:
     steps:
 
       - name: Validate composer.json and composer.lock
-        uses: MilesChou/composer-action@master
+        uses: MilesChou/composer-action/7.4/install@master
         with:
           args: validate
 
       - name: composer install
-        uses: MilesChou/composer-action@master
+        uses: MilesChou/composer-action/7.4/install@master
         with:
           args: install
