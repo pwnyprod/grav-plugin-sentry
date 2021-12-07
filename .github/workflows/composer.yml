@@ -23,3 +23,13 @@ jobs:
         uses: MilesChou/composer-action/7.4/install@master
         with:
           args: install --ignore-platform-reqs
+  composer-unused:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: composer install
+        uses: MilesChou/composer-action/7.4/install@master
+        with:
+          args: install --ignore-platform-reqs
+      - name: composer unused
+        run: curl -JOL https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar && php composer-unused.phar --no-cache --no-interaction --no-progress
