@@ -15,7 +15,7 @@
         "ext-zip": "*",
         "ext-gd": "*",
         "composer-runtime-api": "^2.0",
-        "sentry/sdk": "2.0.*"
+        "sentry/sdk": "2.2.0"
     }
     ,
     "require-dev": {
