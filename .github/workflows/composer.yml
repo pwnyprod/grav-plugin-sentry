@@ -22,10 +22,16 @@ jobs:
       - name: composer install
         uses: MilesChou/composer-action/7.4/install@master
         with:
-          args: install --ignore-platform-reqs
+          args: install --ignore-platform-reqs --no-progress
   composer-unused:
     runs-on: ubuntu-latest
     steps:
+      - name: setup php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer:v2
+          extensions: zip, gd
       - uses: actions/checkout@v2
       - name: composer install
         uses: MilesChou/composer-action/7.4/install@master

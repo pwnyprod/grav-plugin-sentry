@@ -10,14 +10,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: setup php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer:v2, codeception
+          extensions: zip, gd, mbstring
       - uses: actions/checkout@v2
       - name: composer install
         uses: nick-zh/composer@php7.4
         with:
-          action: install --ignore-platform-reqs
+          action: install  --ignore-platform-reqs --no-progress
       - name: codecept build
         run: vendor/bin/codecept build
       - name: show testfolder
         run: ls -lash tests
-      - name: codeception run
-        run: vendor/bin/codecept run -vvv
+      - name: codeception run unit
+        run: php vendor/bin/codecept run unit

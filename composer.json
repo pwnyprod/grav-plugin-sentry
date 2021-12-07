@@ -11,6 +11,7 @@
         }
     ],
     "require": {
+        "php": "~7.4",
         "ext-zip": "*",
         "ext-gd": "*",
         "composer-runtime-api": "^2.0",
