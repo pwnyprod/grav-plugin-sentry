@@ -1,0 +1,24 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Validate composer.json and composer.lock
+      uses: nick-zh/composer@php7.4
+      with:
+        action: validate
+
+      - name: composer install
+      uses: nick-zh/composer@php7.4
+      with:
+        action: install
