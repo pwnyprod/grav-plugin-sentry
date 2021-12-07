@@ -22,4 +22,4 @@ jobs:
       - name: composer install
         uses: MilesChou/composer-action/7.4/install@master
         with:
-          args: install
+          args: install --ignore-platform-reqs

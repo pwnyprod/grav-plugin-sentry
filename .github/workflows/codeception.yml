@@ -14,6 +14,6 @@ jobs:
       - name: composer install
         uses: nick-zh/composer@php7.4
         with:
-          action: install
+          action: install --ignore-platform-reqs
       - name: codeception run
         uses: joelwmale/codeception-action@1.0.0
