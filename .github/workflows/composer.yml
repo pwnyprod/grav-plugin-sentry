@@ -10,11 +10,10 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: root
-        uses: actions/checkout@v2
         run: pwd
       - name: list
-        uses: actions/checkout@v2
         run: ls -lash
       - name: Validate composer.json and composer.lock
         uses: MilesChou/composer-action/7.4/install@master
