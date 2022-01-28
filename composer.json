@@ -20,7 +20,7 @@
     ,
     "require-dev": {
         "codeception/codeception": "4.1.22",
-        "getgrav/grav": "1.7.25"
+        "getgrav/grav": "1.7.29"
     },
     "scripts": {
         "test": "vendor/bin/codecept run"
