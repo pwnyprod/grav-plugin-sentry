@@ -10,7 +10,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Get composer cache directory
         id: composer-cache
@@ -30,7 +30,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Get composer cache directory
         id: composer-cache
@@ -58,7 +58,7 @@ jobs:
           tools: composer:v2
           extensions: zip, gd
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Get composer cache directory
         id: composer-cache
